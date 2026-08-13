@@ -22,13 +22,13 @@
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{
-    width:1080px;
-    height:1920px;
+    width:100vw;
+    height:100vh;
     overflow:hidden;
     font-family:'Nunito Sans', sans-serif;
     background:var(--bg-deep);
   }
-  .stage{ position:relative; width:1080px; height:1920px; }
+  .stage{ position:absolute; top:0; left:0; width:1080px; height:1920px; transform-origin:top left; }
 
   .clip-tl-br{ clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px); }
   .clip-both{ clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px); }
@@ -202,6 +202,16 @@
   const subtitle = params.get('subtitle');
   if (title) document.getElementById('title').innerHTML = title.replace(/\n/g,'<br>');
   if (subtitle) document.getElementById('subtitle').textContent = subtitle;
+
+  function fitStage(){
+    const stage = document.querySelector('.stage');
+    const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+    const offsetX = (window.innerWidth - 1080 * scale) / 2;
+    const offsetY = (window.innerHeight - 1920 * scale) / 2;
+    stage.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
 </script>
 </body>
 </html>

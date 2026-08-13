@@ -9,11 +9,11 @@
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{
-    width:1080px; height:1920px;
+    width:100vw; height:100vh;
     overflow:hidden;
     background:#05070c;
   }
-  .stage{ position:relative; width:1080px; height:1920px; }
+  .stage{ position:absolute; top:0; left:0; width:1080px; height:1920px; transform-origin:top left; }
 
   @keyframes gridDrift{ 0%{background-position:0 0;} 100%{background-position:56px 112px;} }
   @keyframes floorMove{ from{background-position-y:0;} to{background-position-y:90px;} }
@@ -78,5 +78,16 @@
       <div class="particle" style="left:50%; top:6%; animation-delay:1.3s;"></div>
     </div>
   </div>
+<script>
+  function fitStage(){
+    const stage = document.querySelector('.stage');
+    const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+    const offsetX = (window.innerWidth - 1080 * scale) / 2;
+    const offsetY = (window.innerHeight - 1920 * scale) / 2;
+    stage.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+</script>
 </body>
 </html>
