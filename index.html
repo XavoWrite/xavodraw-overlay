@@ -72,6 +72,35 @@
     0%,100%{ opacity:.55; }
     50%{ opacity:1; }
   }
+  @keyframes gridDrift{
+    0%{ background-position: 0 0; }
+    100%{ background-position: 48px 96px; }
+  }
+  @keyframes particleFloat{
+    0%,100%{ transform:translateY(0); opacity:.25; }
+    50%{ transform:translateY(-14px); opacity:1; }
+  }
+
+  /* ---------- animated Tron grid (fondo compacto, detras del personaje) ---------- */
+  .tron-grid{
+    position:absolute; inset:0; overflow:hidden;
+  }
+  .tron-grid::before{
+    content:"";
+    position:absolute; inset:-40px;
+    background-image:
+      linear-gradient(rgba(63,216,245,0.16) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63,216,245,0.16) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridDrift 6s linear infinite;
+    mask-image: radial-gradient(ellipse at 35% 40%, black 35%, transparent 80%);
+  }
+  .tron-grid .particle{
+    position:absolute; width:4px; height:4px; border-radius:50%;
+    background:var(--cyan-bright);
+    box-shadow:0 0 8px var(--cyan-bright), 0 0 16px var(--cyan-bright);
+    animation: particleFloat 3.2s ease-in-out infinite;
+  }
 
   /* ---------- TOP TITLE BAR ---------- */
   .top-bar{
@@ -227,6 +256,12 @@
     </div>
 
     <div class="char-frame clip-both">
+      <div class="tron-grid">
+        <div class="particle" style="left:12%; top:20%; animation-delay:0s;"></div>
+        <div class="particle" style="left:82%; top:35%; animation-delay:.8s;"></div>
+        <div class="particle" style="left:65%; top:75%; animation-delay:1.6s;"></div>
+        <div class="particle" style="left:25%; top:85%; animation-delay:2.3s;"></div>
+      </div>
       <div class="char-label"><span class="dot"></span>CORONEL DEADPOOL</div>
       <div class="corner tl"></div>
       <div class="corner tr"></div>
@@ -240,6 +275,10 @@
     </div>
 
     <div class="tracker-dock clip-both">
+      <div class="tron-grid">
+        <div class="particle" style="left:20%; top:30%; animation-delay:.4s;"></div>
+        <div class="particle" style="left:78%; top:60%; animation-delay:1.9s;"></div>
+      </div>
       <div class="dock-label"><span class="dot"></span>LIVE STATS</div>
       <div class="corner tl"></div>
       <div class="corner tr"></div>
