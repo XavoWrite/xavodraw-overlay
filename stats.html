@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Stats - Marvel Rivals - XavoDraw</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Orbitron:wght@500;700;900&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-panel: rgba(20,26,38,0.82);
+    --bg-panel-solid:#141a26;
+    --bg-panel2: rgba(28,39,64,0.65);
+    --cyan:#3fd8f5;
+    --cyan-bright:#5fd4ff;
+    --red-bright:#ff4b56;
+    --text:#edf1f7;
+    --mute:#8592a8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; user-select:none;}
+  html,body{
+    width:404px; height:280px;
+    background:transparent;
+    overflow:hidden;
+    font-family:'Nunito Sans', sans-serif;
+  }
+  .panel{
+    position:relative; width:404px; height:280px;
+    background:var(--bg-panel);
+    border:1.5px solid rgba(63,216,245,0.5);
+    clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px);
+    padding:16px 18px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .row-top{
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid rgba(63,216,245,0.25);
+    padding-bottom:8px;
+  }
+  .row-top .label{
+    font-family:'Orbitron', sans-serif;
+    font-size:13px; letter-spacing:2px;
+    color:var(--mute); text-transform:uppercase;
+  }
+  .rank-ctrl{ display:flex; align-items:center; gap:6px; }
+  #rank-display{
+    font-family:'Orbitron', sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:1px;
+    color:var(--cyan-bright);
+    background:var(--bg-panel2);
+    border:1px solid rgba(63,216,245,0.4);
+    padding:4px 10px;
+    min-width:120px; text-align:center;
+  }
+  .mini-btn{
+    width:20px; height:20px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bg-panel2);
+    border:1px solid rgba(63,216,245,0.4);
+    color:var(--cyan-bright);
+    font-family:'Orbitron', sans-serif; font-size:13px;
+    cursor:pointer;
+  }
+  .stats-row{
+    flex:1;
+    display:flex; align-items:center; justify-content:space-around;
+  }
+  .stat-col{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .stat-col .label{
+    font-family:'Orbitron', sans-serif;
+    font-size:12px; letter-spacing:3px; color:var(--mute); text-transform:uppercase;
+  }
+  .stat-controls{ display:flex; align-items:center; gap:10px; }
+  .stat-val{
+    font-family:'Orbitron', sans-serif;
+    font-weight:900; font-size:44px; min-width:52px; text-align:center;
+  }
+  #wins-val{ color:var(--cyan-bright); text-shadow:0 0 14px rgba(63,216,245,0.6); }
+  #losses-val{ color:var(--red-bright); text-shadow:0 0 14px rgba(255,75,86,0.6); }
+  .divider{ width:1.5px; height:48px; background:rgba(63,216,245,0.25); }
+  .row-bottom{
+    display:flex; align-items:center; justify-content:space-between;
+    border-top:1px solid rgba(63,216,245,0.25);
+    padding-top:8px;
+    font-family:'Orbitron', sans-serif;
+    font-size:12px; letter-spacing:1px; color:var(--mute);
+  }
+  .row-bottom .value{ color:var(--text); font-weight:700; }
+  .row-bottom .reset{
+    cursor:pointer; color:var(--mute); letter-spacing:1px;
+  }
+  .row-bottom .reset:hover{ color:var(--red-bright); }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <div class="row-top">
+      <span class="label">Ranked Session</span>
+      <div class="rank-ctrl">
+        <div class="mini-btn" onclick="updateRank(-1)">-</div>
+        <div id="rank-display">PLATINUM I</div>
+        <div class="mini-btn" onclick="updateRank(1)">+</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-col">
+        <span class="label">Wins</span>
+        <div class="stat-controls">
+          <div class="mini-btn" onclick="updateStat('wins',-1)">-</div>
+          <span id="wins-val" class="stat-val">0</span>
+          <div class="mini-btn" onclick="updateStat('wins',1)">+</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="stat-col">
+        <span class="label">Losses</span>
+        <div class="stat-controls">
+          <div class="mini-btn" onclick="updateStat('losses',-1)">-</div>
+          <span id="losses-val" class="stat-val">0</span>
+          <div class="mini-btn" onclick="updateStat('losses',1)">+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-bottom">
+      <div>WIN RATE <span id="winrate" class="value">0%</span></div>
+      <div id="streak">RACHA <span class="value">NEUTRAL</span></div>
+      <div class="reset" onclick="resetStats()">RESET</div>
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+
+  const baseRanks = ["BRONZE","SILVER","GOLD","PLATINUM","DIAMOND","GRANDMASTER","CELESTIAL"];
+  const specialRanks = ["ETERNITY","ONE ABOVE ALL"];
+  const ranks = ["PLACEMENTS"];
+  baseRanks.forEach(r => { ranks.push(`${r} III`); ranks.push(`${r} II`); ranks.push(`${r} I`); });
+  ranks.push(...specialRanks);
+
+  let stats = { wins:0, losses:0 };
+  let rankIndex = 12; // Platinum I
+
+  // 1) cargar de localStorage (recuerda entre recargas)
+  const saved = localStorage.getItem('xavo_rivals_stats');
+  if (saved) stats = JSON.parse(saved);
+  const savedRank = localStorage.getItem('xavo_rivals_rank');
+  if (savedRank && ranks.includes(savedRank)) rankIndex = ranks.indexOf(savedRank);
+
+  // 2) la URL manda por encima de todo (?wins=5&losses=3&rank=DIAMOND%20II)
+  if (params.has('wins')) stats.wins = parseInt(params.get('wins')) || 0;
+  if (params.has('losses')) stats.losses = parseInt(params.get('losses')) || 0;
+  if (params.has('rank')) {
+    const idx = ranks.indexOf(params.get('rank').toUpperCase());
+    if (idx !== -1) rankIndex = idx;
+  }
+
+  function renderRank(){
+    document.getElementById('rank-display').textContent = ranks[rankIndex];
+    localStorage.setItem('xavo_rivals_rank', ranks[rankIndex]);
+  }
+  function updateRank(delta){
+    rankIndex = (rankIndex + delta + ranks.length) % ranks.length;
+    renderRank();
+  }
+
+  function render(){
+    document.getElementById('wins-val').textContent = stats.wins;
+    document.getElementById('losses-val').textContent = stats.losses;
+    const total = stats.wins + stats.losses;
+    const wr = total === 0 ? 0 : Math.round((stats.wins/total)*100);
+    document.getElementById('winrate').textContent = wr + '%';
+    const diff = stats.wins - stats.losses;
+    document.getElementById('streak').innerHTML = diff === 0
+      ? 'RACHA <span class="value">NEUTRAL</span>'
+      : diff > 0
+        ? `RACHA <span class="value" style="color:var(--cyan-bright)">+${diff}</span>`
+        : `RACHA <span class="value" style="color:var(--red-bright)">${diff}</span>`;
+    localStorage.setItem('xavo_rivals_stats', JSON.stringify(stats));
+  }
+  function updateStat(key, delta){
+    stats[key] = Math.max(0, stats[key] + delta);
+    render();
+  }
+  function resetStats(){
+    stats = { wins:0, losses:0 };
+    render();
+  }
+
+  renderRank();
+  render();
+</script>
+</body>
+</html>

@@ -221,24 +221,12 @@
       0 0 30px var(--cyan-bright);
   }
 
-  /* ---------- TRACKER.GG DOCK (marco fijo; el widget real va como otra fuente Link
-     en TikTok Studio, ubicada/redimensionada para calzar exacto en este hueco) ---------- */
-  .tracker-dock{
+  /* ---------- panel de stats propio (stats.html), incrustado sin restricciones ---------- */
+  .stats-dock{
     position:absolute; left:560px; top:460px; width:404px; height:280px;
-    background:linear-gradient(180deg, rgba(20,26,38,0.12), rgba(11,13,18,0.4) 80%);
-    border:1.5px solid rgba(63,216,245,0.5);
-    animation: glowPulse 4s ease-in-out infinite 0.5s;
   }
-  .tracker-dock .dock-label{
-    position:absolute; top:14px; left:16px;
-    font-family:'Orbitron', sans-serif;
-    font-weight:700;
-    font-size:14px;
-    letter-spacing:2px;
-    color:var(--cyan-bright);
-    background:rgba(5,7,10,0.55);
-    padding:6px 12px;
-    border-left:3px solid var(--red-bright);
+  .stats-dock iframe{
+    width:100%; height:100%; border:0; background:transparent;
   }
 </style>
 </head>
@@ -262,7 +250,7 @@
         <div class="particle" style="left:65%; top:75%; animation-delay:1.6s;"></div>
         <div class="particle" style="left:25%; top:85%; animation-delay:2.3s;"></div>
       </div>
-      <div class="char-label"><span class="dot"></span>CORONEL DEADPOOL</div>
+      <div class="char-label"><span class="dot"></span>XAVODRAW</div>
       <div class="corner tl"></div>
       <div class="corner tr"></div>
       <div class="corner bl"></div>
@@ -274,16 +262,8 @@
       <span>XAVODRAW</span>
     </div>
 
-    <div class="tracker-dock clip-both">
-      <div class="tron-grid">
-        <div class="particle" style="left:20%; top:30%; animation-delay:.4s;"></div>
-        <div class="particle" style="left:78%; top:60%; animation-delay:1.9s;"></div>
-      </div>
-      <div class="dock-label"><span class="dot"></span>LIVE STATS</div>
-      <div class="corner tl"></div>
-      <div class="corner tr"></div>
-      <div class="corner bl"></div>
-      <div class="corner br"></div>
+    <div class="stats-dock">
+      <iframe src="stats.html?wins=34&losses=31&rank=DIAMOND%20II" title="Stats Marvel Rivals"></iframe>
     </div>
 
   </div>
