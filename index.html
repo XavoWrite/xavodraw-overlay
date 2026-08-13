@@ -164,7 +164,7 @@
 
   /* ---------- CHARACTER HUD FRAME ---------- */
   .char-frame{
-    position:absolute; left:40px; top:460px; width:460px; height:520px;
+    position:absolute; left:40px; top:1260px; width:460px; height:520px;
     background:linear-gradient(180deg, rgba(20,26,38,0.15), rgba(11,13,18,0.55) 80%);
     border:1.5px solid rgba(63,216,245,0.5);
     animation: glowPulse 4s ease-in-out infinite 1s;
@@ -204,7 +204,7 @@
 
   /* ---------- USERNAME CHIP ---------- */
   .username-chip{
-    position:absolute; left:40px; top:884px; width:340px; height:76px;
+    position:absolute; left:40px; top:1684px; width:340px; height:76px;
     background:var(--bg-panel-solid);
     border:1.5px solid rgba(63,216,245,0.6);
     display:flex; align-items:center; justify-content:center;
@@ -221,12 +221,24 @@
       0 0 30px var(--cyan-bright);
   }
 
-  /* ---------- panel de stats propio (stats.html), incrustado sin restricciones ---------- */
-  .stats-dock{
-    position:absolute; left:560px; top:460px; width:404px; height:280px;
+  /* ---------- TRACKER.GG DOCK (marco fijo; la fuente Link de tracker.gg
+     va aparte en TikTok Studio, ubicada/redimensionada para calzar aca) ---------- */
+  .tracker-dock{
+    position:absolute; left:560px; top:1260px; width:404px; height:280px;
+    background:linear-gradient(180deg, rgba(20,26,38,0.12), rgba(11,13,18,0.4) 80%);
+    border:1.5px solid rgba(63,216,245,0.5);
+    animation: glowPulse 4s ease-in-out infinite 0.5s;
   }
-  .stats-dock iframe{
-    width:100%; height:100%; border:0; background:transparent;
+  .tracker-dock .dock-label{
+    position:absolute; top:14px; left:16px;
+    font-family:'Orbitron', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:2px;
+    color:var(--cyan-bright);
+    background:rgba(5,7,10,0.55);
+    padding:6px 12px;
+    border-left:3px solid var(--red-bright);
   }
 </style>
 </head>
@@ -262,8 +274,16 @@
       <span>XAVODRAW</span>
     </div>
 
-    <div class="stats-dock">
-      <iframe src="stats.html?wins=34&losses=31&kda=3.86&rank=DIAMOND%20II" title="Stats Marvel Rivals"></iframe>
+    <div class="tracker-dock clip-both">
+      <div class="tron-grid">
+        <div class="particle" style="left:20%; top:30%; animation-delay:.4s;"></div>
+        <div class="particle" style="left:78%; top:60%; animation-delay:1.9s;"></div>
+      </div>
+      <div class="dock-label"><span class="dot"></span>LIVE STATS</div>
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
     </div>
 
   </div>
