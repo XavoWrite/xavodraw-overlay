@@ -128,14 +128,10 @@
     margin-left:20px;
     padding:10px;
   }
-  .flag-badge .flag{
-    width:100%; height:64%;
-    display:flex; flex-direction:column;
+  .flag-badge img{
+    width:100%; height:64%; object-fit:cover;
     box-shadow:0 0 6px rgba(0,0,0,0.6);
   }
-  .flag-badge .flag div:nth-child(1){ flex:2; background:#FFD100; }
-  .flag-badge .flag div:nth-child(2){ flex:1; background:#0033A0; }
-  .flag-badge .flag div:nth-child(3){ flex:1; background:#EF3340; }
 
   /* ---------- CHARACTER HUD FRAME ---------- */
   .char-frame{
@@ -145,10 +141,9 @@
     animation: glowPulse 4s ease-in-out infinite 1s;
     overflow:hidden;
   }
-  .char-frame img{
+  .char-frame iframe{
     position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; object-position:18% 42%;
-    filter:drop-shadow(0 0 20px rgba(0,0,0,0.5));
+    border:0; background:transparent;
   }
   .char-label{
     position:absolute; top:14px; left:16px;
@@ -162,7 +157,7 @@
     border-left:3px solid var(--red-bright);
     z-index:2;
   }
-  .char-label .dot{
+  .dot{
     display:inline-block; width:8px; height:8px; border-radius:50%;
     background:var(--red-bright); margin-right:8px;
     box-shadow:0 0 8px var(--red-bright);
@@ -197,39 +192,24 @@
       0 0 30px var(--cyan-bright);
   }
 
-  /* ---------- STATS RIBBON ---------- */
-  .stats-col{
-    position:absolute; left:560px; top:460px; width:404px;
-    display:flex; flex-direction:column; gap:18px;
-  }
-  .stat-chip{
-    background:var(--bg-panel);
+  /* ---------- TRACKER.GG DOCK (marco fijo; el widget real va como otra fuente Link
+     en TikTok Studio, ubicada/redimensionada para calzar exacto en este hueco) ---------- */
+  .tracker-dock{
+    position:absolute; left:560px; top:460px; width:404px; height:280px;
+    background:linear-gradient(180deg, rgba(20,26,38,0.12), rgba(11,13,18,0.4) 80%);
     border:1.5px solid rgba(63,216,245,0.5);
-    padding:16px 22px;
-    box-shadow:0 0 16px rgba(63,216,245,0.2);
+    animation: glowPulse 4s ease-in-out infinite 0.5s;
   }
-  .stat-chip .label{
+  .tracker-dock .dock-label{
+    position:absolute; top:14px; left:16px;
     font-family:'Orbitron', sans-serif;
-    font-size:14px;
-    letter-spacing:3px;
-    color:var(--mute);
-    margin-bottom:4px;
-  }
-  .stat-chip .value{
-    font-family:'Orbitron', sans-serif;
-    font-weight:900;
-    font-size:38px;
-    color:var(--cyan-bright);
-    text-shadow:0 0 14px rgba(63,216,245,0.6);
-  }
-  .stat-chip.alt .value{ color:var(--red-bright); text-shadow:0 0 14px rgba(255,75,86,0.6); }
-  .stat-chip .tracker{
-    margin-top:10px;
-    font-family:'Nunito Sans', sans-serif;
     font-weight:700;
-    font-size:13px;
-    letter-spacing:1px;
-    color:var(--mute);
+    font-size:14px;
+    letter-spacing:2px;
+    color:var(--cyan-bright);
+    background:rgba(5,7,10,0.55);
+    padding:6px 12px;
+    border-left:3px solid var(--red-bright);
   }
 </style>
 </head>
@@ -243,7 +223,7 @@
         <div class="title">RANKED Y QP</div>
         <div class="subtitle">Tips y buenos dibujos mientras juego</div>
       </div>
-      <div class="flag-badge clip-tl-br"><div class="flag"><div></div><div></div><div></div></div></div>
+      <div class="flag-badge clip-tl-br"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg" alt="Ecuador"></div>
     </div>
 
     <div class="char-frame clip-both">
@@ -252,23 +232,19 @@
       <div class="corner tr"></div>
       <div class="corner bl"></div>
       <div class="corner br"></div>
-      <img src="assets/coronel-deadpool.png" alt="Coronel Deadpool">
+      <iframe src="https://reactive.fugi.tech/basic/359909509369692162" title="Coronel Deadpool reactivo" allowtransparency="true"></iframe>
     </div>
 
     <div class="username-chip clip-tl-br">
       <span>XAVODRAW</span>
     </div>
 
-    <div class="stats-col">
-      <div class="stat-chip clip-tl-br">
-        <div class="label">SEASON W/L</div>
-        <div class="value">66-67</div>
-      </div>
-      <div class="stat-chip alt clip-tl-br">
-        <div class="label">SEASON KDA</div>
-        <div class="value">3.86</div>
-        <div class="tracker">TRN · TRACKER.GG/MARVEL-RIVALS</div>
-      </div>
+    <div class="tracker-dock clip-both">
+      <div class="dock-label"><span class="dot"></span>LIVE STATS</div>
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
     </div>
 
   </div>
