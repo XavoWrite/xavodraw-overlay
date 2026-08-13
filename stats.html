@@ -72,10 +72,11 @@
   .stat-controls{ display:flex; align-items:center; gap:10px; }
   .stat-val{
     font-family:'Orbitron', sans-serif;
-    font-weight:900; font-size:44px; min-width:52px; text-align:center;
+    font-weight:900; font-size:34px; min-width:56px; text-align:center;
   }
   #wins-val{ color:var(--cyan-bright); text-shadow:0 0 14px rgba(63,216,245,0.6); }
   #losses-val{ color:var(--red-bright); text-shadow:0 0 14px rgba(255,75,86,0.6); }
+  #kda-val{ color:var(--text); text-shadow:0 0 14px rgba(255,255,255,0.35); }
   .divider{ width:1.5px; height:48px; background:rgba(63,216,245,0.25); }
   .row-bottom{
     display:flex; align-items:center; justify-content:space-between;
@@ -120,6 +121,15 @@
           <div class="mini-btn" onclick="updateStat('losses',1)">+</div>
         </div>
       </div>
+      <div class="divider"></div>
+      <div class="stat-col">
+        <span class="label">KDA</span>
+        <div class="stat-controls">
+          <div class="mini-btn" onclick="updateKDA(-0.1)">-</div>
+          <span id="kda-val" class="stat-val">0.0</span>
+          <div class="mini-btn" onclick="updateKDA(0.1)">+</div>
+        </div>
+      </div>
     </div>
 
     <div class="row-bottom">
@@ -138,18 +148,19 @@
   baseRanks.forEach(r => { ranks.push(`${r} III`); ranks.push(`${r} II`); ranks.push(`${r} I`); });
   ranks.push(...specialRanks);
 
-  let stats = { wins:0, losses:0 };
+  let stats = { wins:0, losses:0, kda:0 };
   let rankIndex = 12; // Platinum I
 
   // 1) cargar de localStorage (recuerda entre recargas)
   const saved = localStorage.getItem('xavo_rivals_stats');
-  if (saved) stats = JSON.parse(saved);
+  if (saved) stats = Object.assign({wins:0,losses:0,kda:0}, JSON.parse(saved));
   const savedRank = localStorage.getItem('xavo_rivals_rank');
   if (savedRank && ranks.includes(savedRank)) rankIndex = ranks.indexOf(savedRank);
 
-  // 2) la URL manda por encima de todo (?wins=5&losses=3&rank=DIAMOND%20II)
+  // 2) la URL manda por encima de todo (?wins=5&losses=3&kda=3.86&rank=DIAMOND%20II)
   if (params.has('wins')) stats.wins = parseInt(params.get('wins')) || 0;
   if (params.has('losses')) stats.losses = parseInt(params.get('losses')) || 0;
+  if (params.has('kda')) stats.kda = parseFloat(params.get('kda')) || 0;
   if (params.has('rank')) {
     const idx = ranks.indexOf(params.get('rank').toUpperCase());
     if (idx !== -1) rankIndex = idx;
@@ -167,6 +178,7 @@
   function render(){
     document.getElementById('wins-val').textContent = stats.wins;
     document.getElementById('losses-val').textContent = stats.losses;
+    document.getElementById('kda-val').textContent = stats.kda.toFixed(2);
     const total = stats.wins + stats.losses;
     const wr = total === 0 ? 0 : Math.round((stats.wins/total)*100);
     document.getElementById('winrate').textContent = wr + '%';
@@ -182,8 +194,12 @@
     stats[key] = Math.max(0, stats[key] + delta);
     render();
   }
+  function updateKDA(delta){
+    stats.kda = Math.max(0, Math.round((stats.kda + delta) * 100) / 100);
+    render();
+  }
   function resetStats(){
-    stats = { wins:0, losses:0 };
+    stats = { wins:0, losses:0, kda:0 };
     render();
   }
 
